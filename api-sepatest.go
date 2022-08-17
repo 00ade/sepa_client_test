@@ -20,7 +20,7 @@ func main() {
 	//Insert new data:
 	err := cli.Update(`INSERT DATA
 	{
-		<io> <FUNZIONA> <AA>
+		<bello> <giocare> <io>
 	}`)
 	if err != nil {
 		fmt.Println(err)

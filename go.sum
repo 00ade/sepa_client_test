@@ -1,0 +1,6 @@
+github.com/GregorioMonari/testfix-sepago v0.0.0-20220816162246-7101ecdb6171 h1:sYYp5iMot2kqIOwjfbJ8MXewooU9KKrC2XgHXtC5xRY=
+github.com/GregorioMonari/testfix-sepago v0.0.0-20220816162246-7101ecdb6171/go.mod h1:cXukWi/8wxRNVmIryvZ+RuA0ndLC6fOnvaOVH6nZf+o=
+github.com/gorilla/websocket v1.5.0 h1:PPwGk2jz7EePpoHN/+ClbZu8SPxiqlu12wZP/3sWmnc=
+github.com/gorilla/websocket v1.5.0/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
+github.com/knakk/rdf v0.0.0-20190304171630-8521bf4c5042 h1:Vzdm5hdlLdpJOKK+hKtkV5u7xGZmNW6aUBjGcTfwx84=
+github.com/knakk/rdf v0.0.0-20190304171630-8521bf4c5042/go.mod h1:fYE0718xXI13XMYLc6iHtvXudfyCGMsZ9hxSM1Ommpg=

@@ -2,8 +2,12 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"sort"
+	"sync"
 
 	"github.com/GregorioMonari/testfix-sepago/sepa"
+	"github.com/GregorioMonari/testfix-sepago/sepa/sparql"
 )
 
 func main() {
@@ -20,7 +24,7 @@ func main() {
 	//Insert new data:
 	err := cli.Update(`INSERT DATA
 	{
-		<bello> <giocare> <io>
+		<prova> <del> <subscribe>
 	}`)
 	if err != nil {
 		fmt.Println(err)
@@ -43,4 +47,41 @@ func main() {
 	}
 	fmt.Println("#### QUERY STOP ####")
 
+	//Subscribe. Create a websocket connection:
+	var wg sync.WaitGroup
+	wg.Add(1) //used to wait for multiple goroutines to finish
+	sub, _ := cli.Subscribe("Select * Where { ?s ?p ?o}", func(notification *sparql.Notification) {
+
+		fmt.Println("Printing notification:")
+		for _, solution := range notification.AddedResults.Solutions() {
+
+			//Sorting keys to get a predictable output
+			// see https://blog.golang.org/go-maps-in-action#TOC_7.
+			var keys []string
+			for k := range solution {
+				keys = append(keys, k)
+			}
+			sort.Strings(keys)
+
+			for _, key := range keys {
+				fmt.Print(key, ": ", solution[key], " ")
+			}
+			fmt.Println(".")
+		}
+		fmt.Println("qui")
+
+		wg.Done()
+	})
+	fmt.Println("## SUBSCRIPTION DONE ##")
+	err = cli.Update(`INSERT DATA
+	{
+		<http://example/lang> <http://example/thebest> "go".
+		<http://example/lang> <http://example/theworst> "visual basic"
+	}`)
+
+	log.Println(err)
+	wg.Wait()
+	sub.Unsubscribe()
+	fmt.Println("")
+	fmt.Println("Unsubscribed")
 }

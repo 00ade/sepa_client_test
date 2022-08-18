@@ -2,8 +2,7 @@ package main
 
 import (
 	"fmt"
-	"log"
-	"sort"
+	//"log"
 	"sync"
 
 	"github.com/GregorioMonari/testfix-sepago/sepa"
@@ -19,12 +18,12 @@ func main() {
 		Ports: sepa.PortsType{Http: 8600, Ws: 9600},
 		Paths: sepa.PathsType{Query: "/query", Update: "/update", Subscribe: "/subscribe"},
 	}
-	cli := sepa.NewClient(config)
+	cli := sepa.NewClient(config) //se riesci jsap
 
 	//Insert new data:
 	err := cli.Update(`INSERT DATA
 	{
-		<prova> <del> <subscribe>
+		<uno> <duo> <tre>
 	}`)
 	if err != nil {
 		fmt.Println(err)
@@ -46,14 +45,15 @@ func main() {
 		}
 	}
 	fmt.Println("#### QUERY STOP ####")
-
+	fmt.Println("QUI")
 	//Subscribe. Create a websocket connection:
 	var wg sync.WaitGroup
 	wg.Add(1) //used to wait for multiple goroutines to finish
-	sub, _ := cli.Subscribe("Select * Where { ?s ?p ?o}", func(notification *sparql.Notification) {
+	fmt.Println("QUI")
+	sub, _ := cli.Subscribe("Select * Where {Graph <http://example/testgraph> {?s ?p ?o} }", func(notification *sparql.Notification) {
 
 		fmt.Println("Printing notification:")
-		for _, solution := range notification.AddedResults.Solutions() {
+		/*for _, solution := range notification.AddedResults.Solutions() {
 
 			//Sorting keys to get a predictable output
 			// see https://blog.golang.org/go-maps-in-action#TOC_7.
@@ -67,7 +67,7 @@ func main() {
 				fmt.Print(key, ": ", solution[key], " ")
 			}
 			fmt.Println(".")
-		}
+		}*/
 		fmt.Println("qui")
 
 		wg.Done()
@@ -79,7 +79,7 @@ func main() {
 		<http://example/lang> <http://example/theworst> "visual basic"
 	}`)
 
-	log.Println(err)
+	//log.Println(err)
 	wg.Wait()
 	sub.Unsubscribe()
 	fmt.Println("")
